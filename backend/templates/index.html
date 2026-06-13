@@ -3,113 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UI2CODE | Screenshot to frontend code</title>
+    <title>ui2code | Screenshot to frontend code</title>
     <link rel="stylesheet" href="../static/style.css">
 </head>
-<body class="home-page">
-    <header class="site-header">
-        <a class="brand" href="/">
-            <span class="brand-mark">U2</span>
-            <span>UI2CODE</span>
+<body class="home-page scenic-home">
+    <header class="figma-header">
+        <a class="figma-brand" href="/" aria-label="ui2code home">
+            <span class="ui2code-logo" aria-hidden="true">
+                <svg viewBox="0 0 56 56" role="img">
+                    <rect x="7" y="7" width="42" height="42" rx="14"/>
+                    <path d="M22 20 15 28l7 8"/>
+                    <path d="M34 20l7 8-7 8"/>
+                    <path d="M29.5 17 26.5 39"/>
+                    <circle cx="20" cy="17" r="3"/>
+                    <circle cx="39" cy="17" r="3"/>
+                    <circle cx="17" cy="39" r="3"/>
+                    <circle cx="38" cy="39" r="3"/>
+                    <path d="M22.5 18.5 31.5 18.5 36.5 36.5"/>
+                    <path d="M19.5 36.5 27.5 28 37 28"/>
+                </svg>
+            </span>
+            <strong>ui2code</strong>
         </a>
-        <nav class="site-nav" aria-label="Primary navigation">
-            <a href="#pipeline">Pipeline</a>
-            <a href="#quality">Quality</a>
-            <a href="#output">Output</a>
+
+        <nav class="figma-nav" aria-label="Primary navigation">
+            <a href="#product">Product</a>
+            <a href="#studio">Studio</a>
+            <a href="#features">Features</a>
+            <a href="#demo">Demo</a>
         </nav>
-        <a class="header-cta" href="#upload">Launch Studio</a>
+
+        <div class="figma-actions">
+            <a href="#features" class="outline-pill">View features</a>
+        </div>
     </header>
 
     <main>
-        <section class="hero-section">
-            <div class="hero-copy">
-                <span class="eyebrow">Visual reasoning for frontend teams</span>
-                <h1>Turn UI screenshots into deployable frontend systems.</h1>
-                <p>
-                    UI2CODE reads layout, components, text semantics, design tokens, and hierarchy before generating clean responsive code.
-                </p>
-                <div class="hero-actions">
-                    <a class="primary-action" href="#upload">Analyze a screenshot</a>
-                    <a class="secondary-action" href="#pipeline">View pipeline</a>
-                </div>
+        <section class="scenic-hero" id="product">
+            <div class="scenic-gallery" aria-hidden="true">
+                <article class="scene-card scene-one">
+                    <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80" alt="">
+                </article>
+                <article class="scene-card scene-two">
+                    <img src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&w=900&q=80" alt="">
+                </article>
+                <article class="scene-card scene-three">
+                    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80" alt="">
+                </article>
+                <article class="scene-card scene-four">
+                    <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=900&q=80" alt="">
+                </article>
+                <article class="scene-card scene-five">
+                    <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=900&q=80" alt="">
+                </article>
             </div>
 
-            <section class="studio-card" id="upload" aria-label="Upload screenshot">
+            <section class="hero-glass-card reveal">
+                <div>
+                    <span class="green-kicker">AI frontend studio</span>
+                    <h1>Turn UI screenshots into production-ready frontend systems.</h1>
+                    <p>
+                        ui2code understands layouts, components, design systems, and hierarchy before generating clean HTML, CSS, JavaScript, React, and Tailwind code.
+                    </p>
+                </div>
+                <div class="hero-card-actions">
+                    <a href="#studio" class="mint-button">Generate Code</a>
+                </div>
+            </section>
+
+            <p class="hero-caption reveal">
+                Upload a screenshot. ui2code reads the interface like a frontend engineer, then packages the generated project.
+            </p>
+        </section>
+
+        <section class="studio-wrap reveal" id="studio">
+            <div class="studio-copy">
+                <span class="green-kicker">Interactive upload studio</span>
+                <h2>Drop your screen and generate a real project.</h2>
+            </div>
+
+            <section class="studio-card scenic-studio" aria-label="Upload studio">
                 <div class="studio-card-header">
                     <div>
-                        <span class="card-kicker">UI2CODE Studio</span>
-                        <h2>Upload interface</h2>
+                        <span class="card-kicker">Screenshot input</span>
+                        <h2>Upload UI</h2>
                     </div>
-                    <span class="live-pill">Ready</span>
+                    <span class="live-pill" id="studioState">Ready</span>
                 </div>
 
-                <label class="dropzone" for="imageInput" id="dropzone">
+                <label class="dropzone premium-dropzone" for="imageInput" id="dropzone">
                     <input type="file" id="imageInput" accept="image/png,image/jpeg,image/webp">
-                    <span class="upload-icon">+</span>
-                    <strong>Drop a UI screenshot here</strong>
-                    <small>Website, app, dashboard, mobile screen, or wireframe</small>
+                    <span class="upload-orb" aria-hidden="true">
+                        <svg viewBox="0 0 48 48">
+                            <path d="M24 34V14"/>
+                            <path d="m16 22 8-8 8 8"/>
+                            <path d="M12 34h24"/>
+                        </svg>
+                    </span>
+                    <strong>Drop a UI screenshot</strong>
+                    <small>Website, dashboard, mobile app, Figma frame, wireframe, or SaaS screen</small>
                 </label>
 
                 <img id="preview" class="upload-preview" alt="Selected screenshot preview">
 
-                <button type="button" id="uploadBtn" class="wide-button">Generate UI System</button>
-                <p class="upload-note" id="uploadStatus">PNG, JPG, JPEG, and WEBP supported.</p>
+                <div class="scan-panel" id="scanPanel" aria-live="polite">
+                    <div class="scan-line"></div>
+                    <div class="progress-track"><span id="progressBar"></span></div>
+                    <ol class="pipeline-list" id="pipelineList">
+                        <li class="active">Screenshot</li>
+                        <li>OCR</li>
+                        <li>Component Detection</li>
+                        <li>Layout Intelligence</li>
+                        <li>React Generation</li>
+                        <li>Code Output</li>
+                    </ol>
+                </div>
+
+                <button type="button" id="uploadBtn" class="wide-button mint-submit">Generate Code</button>
+                <p class="upload-note" id="uploadStatus">Supports PNG, JPG, JPEG, and WEBP.</p>
             </section>
         </section>
 
-        <section class="feature-strip" id="pipeline">
-            <article>
-                <span>01</span>
-                <h3>Vision</h3>
-                <p>Detects UI components, boundaries, containers, and relationships.</p>
-            </article>
-            <article>
-                <span>02</span>
-                <h3>Semantics</h3>
-                <p>Classifies OCR text as headings, labels, buttons, menus, and body copy.</p>
-            </article>
-            <article>
-                <span>03</span>
-                <h3>Layout</h3>
-                <p>Turns absolute pixels into grids, flex groups, spacing, and hierarchy.</p>
-            </article>
-            <article>
-                <span>04</span>
-                <h3>Code</h3>
-                <p>Generates React, Next.js, Tailwind, HTML, CSS, and JS project files.</p>
-            </article>
+        <section class="features-section scenic-features" id="features">
+            <div class="section-heading reveal">
+                <span class="green-kicker">What ui2code understands</span>
+                <h2>From screenshot to structured frontend output.</h2>
+            </div>
+
+            <div class="feature-grid">
+                <article class="feature-card reveal">
+                    <span class="feature-icon">Aa</span>
+                    <h3>OCR Extraction</h3>
+                    <p>Extracts visible text and keeps it connected to the original UI context.</p>
+                </article>
+                <article class="feature-card reveal">
+                    <span class="feature-icon">[]</span>
+                    <h3>Component Detection</h3>
+                    <p>Detects buttons, cards, forms, images, navigation bars, menus, and sections.</p>
+                </article>
+                <article class="feature-card reveal">
+                    <span class="feature-icon">#</span>
+                    <h3>Layout Intelligence</h3>
+                    <p>Understands spacing, alignment, hierarchy, grids, columns, and responsiveness.</p>
+                </article>
+                <article class="feature-card reveal">
+                    <span class="feature-icon">&lt;/&gt;</span>
+                    <h3>Code Generation</h3>
+                    <p>Generates HTML, CSS, JavaScript, React, Next.js, and Tailwind project files.</p>
+                </article>
+                <article class="feature-card reveal">
+                    <span class="feature-icon">◐</span>
+                    <h3>Design System Extraction</h3>
+                    <p>Extracts colors, fonts, shadows, spacing, radii, and reusable tokens.</p>
+                </article>
+                <article class="feature-card reveal">
+                    <span class="feature-icon">✦</span>
+                    <h3>AI Reasoning</h3>
+                    <p>Infers component purpose, hierarchy, naming, accessibility, and responsive intent.</p>
+                </article>
+            </div>
         </section>
 
-        <section class="product-band" id="quality">
-            <div>
-                <span class="eyebrow">Production signals</span>
-                <h2>Intermediate representation first. Code second.</h2>
+        <section class="demo-section scenic-demo reveal" id="demo">
+            <div class="demo-copy">
+                <span class="green-kicker">Live preview style</span>
+                <h2>Clean visual input. Clean code output.</h2>
             </div>
-            <div class="quality-grid">
-                <div>Component detection accuracy</div>
-                <div>OCR confidence</div>
-                <div>Layout reconstruction</div>
-                <div>Visual similarity proxy</div>
-                <div>Code quality score</div>
-                <div>Accessibility hints</div>
+            <div class="demo-split">
+                <div class="demo-screen scenic-preview">
+                    <div class="mock-browser"><span></span><span></span><span></span></div>
+                    <div class="mock-scenic"></div>
+                    <div class="mock-grid"><span></span><span></span><span></span></div>
+                </div>
+                <div class="code-editor">
+                    <div class="editor-tabs"><span>Generated.jsx</span><span>style.css</span></div>
+                    <pre><code>&lt;main className="generated-page"&gt;
+  &lt;Navigation /&gt;
+  &lt;Hero /&gt;
+  &lt;ResponsiveSections /&gt;
+&lt;/main&gt;</code></pre>
+                </div>
             </div>
-        </section>
-
-        <section class="output-section" id="output">
-            <div class="output-copy">
-                <span class="eyebrow">Generated output</span>
-                <h2>Deployable project structure</h2>
-                <p>The analysis produces a hierarchy JSON plus project files organized for real frontend work.</p>
-            </div>
-            <pre class="tree-view">project/
-  components/
-  pages/
-  styles/
-  assets/
-  tailwind.config.js
-  package.json</pre>
         </section>
     </main>
+
+    <footer class="site-footer scenic-footer">
+        <a class="figma-brand" href="/">
+            <span class="ui2code-logo" aria-hidden="true">
+                <svg viewBox="0 0 56 56" role="img">
+                    <rect x="7" y="7" width="42" height="42" rx="14"/>
+                    <path d="M22 20 15 28l7 8"/>
+                    <path d="M34 20l7 8-7 8"/>
+                    <path d="M29.5 17 26.5 39"/>
+                    <circle cx="20" cy="17" r="3"/>
+                    <circle cx="39" cy="17" r="3"/>
+                    <circle cx="17" cy="39" r="3"/>
+                    <circle cx="38" cy="39" r="3"/>
+                    <path d="M22.5 18.5 31.5 18.5 36.5 36.5"/>
+                    <path d="M19.5 36.5 27.5 28 37 28"/>
+                </svg>
+            </span>
+            <strong>ui2code</strong>
+        </a>
+    </footer>
 
     <script src="../static/script.js"></script>
 </body>
