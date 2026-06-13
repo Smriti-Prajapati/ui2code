@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI2CODE Studio</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body class="editor-page" data-image-file="{{ image_file }}">
+    <main class="analysis-shell">
+        <aside class="preview-pane">
+            <div class="editor-topbar">
+                <a class="brand compact" href="/">
+                    <span class="brand-mark">U2</span>
+                    <span>UI2CODE</span>
+                </a>
+                <a class="ghost-link" href="/">New upload</a>
+            </div>
+
+            <section class="screen-stage">
+                <div class="stage-header">
+                    <div>
+                        <span class="card-kicker">Source screenshot</span>
+                        <h1>Visual input</h1>
+                    </div>
+                    <span class="live-pill" id="stagePill">Idle</span>
+                </div>
+                <img class="screenshot" id="sourceScreenshot" src="/uploads/{{ image_file }}" alt="Uploaded UI screenshot">
+                <div class="direct-file-warning" id="directFileWarning">
+                    Open the app from the Flask server to load uploaded screenshots and run analysis.
+                </div>
+            </section>
+
+            <button id="analyzeBtn" class="wide-button analysis-button" type="button">Analyze Screenshot</button>
+            <a id="downloadBtn" class="wide-button download-button" href="/download/{{ image_file }}">Download Generated Website</a>
+        </aside>
+
+        <section class="inspector-pane">
+            <div class="inspector-header">
+                <div>
+                    <span class="eyebrow">Intermediate representation</span>
+                    <h2>Reasoned UI system</h2>
+                </div>
+                <div class="status-bar" id="statusBar">Ready to analyze</div>
+            </div>
+
+            <div class="metrics-grid" id="metricsGrid">
+                <div class="metric skeleton"><span>Components</span><strong>-</strong></div>
+                <div class="metric skeleton"><span>OCR</span><strong>-</strong></div>
+                <div class="metric skeleton"><span>Layout</span><strong>-</strong></div>
+                <div class="metric skeleton"><span>Visual</span><strong>-</strong></div>
+                <div class="metric skeleton"><span>Code</span><strong>-</strong></div>
+                <div class="metric skeleton"><span>Overall</span><strong>-</strong></div>
+            </div>
+
+            <div class="tabs" role="tablist" aria-label="Analysis sections">
+                <button class="tab active" data-tab="hierarchy" type="button">Hierarchy</button>
+                <button class="tab" data-tab="design" type="button">Design</button>
+                <button class="tab" data-tab="layout" type="button">Layout</button>
+                <button class="tab" data-tab="code" type="button">Code</button>
+                <button class="tab" data-tab="raw" type="button">JSON</button>
+            </div>
+
+            <section class="panel active" id="hierarchyPanel">
+                <div class="panel-title">
+                    <h3>Component Hierarchy</h3>
+                    <span>Semantic page tree</span>
+                </div>
+                <pre id="hierarchyOutput" class="empty-pre">Run analysis to see inferred components.</pre>
+            </section>
+
+            <section class="panel" id="designPanel">
+                <div class="panel-title">
+                    <h3>Design System</h3>
+                    <span>Colors, type, spacing, radii, shadows</span>
+                </div>
+                <div class="palette" id="paletteOutput"></div>
+                <pre id="designOutput" class="empty-pre">Run analysis to extract design tokens.</pre>
+            </section>
+
+            <section class="panel" id="layoutPanel">
+                <div class="panel-title">
+                    <h3>Layout Intelligence</h3>
+                    <span>Rows, grids, alignment, spacing</span>
+                </div>
+                <pre id="layoutOutput" class="empty-pre">Run analysis to inspect layout reasoning.</pre>
+            </section>
+
+            <section class="panel" id="codePanel">
+                <div class="code-header">
+                    <div class="panel-title">
+                        <h3>Generated Project</h3>
+                        <span>Next.js, React, Tailwind, HTML/CSS/JS</span>
+                    </div>
+                    <select id="fileSelect" aria-label="Generated file"></select>
+                </div>
+                <textarea id="codeOutput" spellcheck="false" placeholder="Generated files will appear here."></textarea>
+            </section>
+
+            <section class="panel" id="rawPanel">
+                <div class="panel-title">
+                    <h3>Full JSON</h3>
+                    <span>Complete screenshot-to-code analysis payload</span>
+                </div>
+                <pre id="rawOutput" class="empty-pre">Run analysis to view the full intermediate representation.</pre>
+            </section>
+        </section>
+    </main>
+
+    <script src="../static/editor.js"></script>
+</body>
+</html>
