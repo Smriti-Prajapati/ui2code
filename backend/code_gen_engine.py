@@ -2,8 +2,7 @@
 Code Generation Engine
 Generates production-ready React, Next.js, HTML/CSS/JS, and Tailwind code
 """
-from html import escape
-from typing import Dict
+from typing import Dict, List, Optional
 import os
 
 class CodeGenerator:
@@ -111,13 +110,10 @@ export default function {component_name}() {{
         
         opening = f"<{jsx_element} {attrs}>"
         closing = f"</{jsx_element}>"
-
-        if jsx_element in {'img', 'input'}:
-            return f"<{jsx_element} {attrs} />"
         
         # Generate content
         if text and not children:
-            return f"{opening}{escape(text)}{closing}"
+            return f"{opening}{text}{closing}"
         elif children:
             child_jsx = '\n'.join([
                 self._hierarchy_to_jsx(child, design_system, level + 1)
@@ -253,12 +249,9 @@ export default function {component_name}() {{
         # Build HTML
         opening = f"<{html_element} {attrs}>"
         closing = f"</{html_element}>"
-
-        if html_element in {'img', 'input'}:
-            return opening.replace(">", " />")
         
         if text and not children:
-            return f"{opening}{escape(text)}{closing}"
+            return f"{opening}{text}{closing}"
         elif children:
             child_html = '\n'.join([
                 self._hierarchy_to_html(child, design_system)
@@ -444,7 +437,6 @@ document.addEventListener('DOMContentLoaded', function() {
         # Add Next.js specific files
         files['pages/index.js'] = files.pop('App.jsx')
         files['pages/_app.js'] = self._generate_nextjs_app()
-        files['package.json'] = self._generate_package_json('nextjs')
         
         return files
     
@@ -461,9 +453,6 @@ export default function App({ Component, pageProps }) {
         colors = design_system.get('colors', {})
         typography = design_system.get('typography', {})
         
-        font_family = typography.get("font_family", "Inter, system-ui, sans-serif")
-        font_stack = [item.strip() for item in font_family.split(",")]
-
         return f"""module.exports = {{
   content: [
     './pages/**/*.{{js,jsx}}',
@@ -477,7 +466,7 @@ export default function App({ Component, pageProps }) {
         accent: '{colors.get("accent", "#0066cc")}',
       }},
       fontFamily: {{
-        sans: {font_stack!r},
+        sans: ['{typography.get("font_family", "Inter, sans-serif")}'],
       }},
     }},
   }},
@@ -502,10 +491,7 @@ export default function App({ Component, pageProps }) {
             return """{
   "name": "ui2code-generated",
   "version": "1.0.0",
-  "private": true,
   "dependencies": {
-    "@vitejs/plugin-react": "^4.2.1",
-    "vite": "^5.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -517,27 +503,6 @@ export default function App({ Component, pageProps }) {
   "scripts": {
     "dev": "vite",
     "build": "vite build"
-  }
-}"""
-        if framework == 'nextjs':
-            return """{
-  "name": "ui2code-generated",
-  "version": "1.0.0",
-  "private": true,
-  "dependencies": {
-    "next": "^14.2.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
-  },
-  "devDependencies": {
-    "tailwindcss": "^3.3.0",
-    "autoprefixer": "^10.4.14",
-    "postcss": "^8.4.24"
-  },
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
   }
 }"""
         return "{}"
