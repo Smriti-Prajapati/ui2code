@@ -5,7 +5,7 @@ AI-powered platform for converting UI screenshots into frontend code.
 ui2code analyzes interface screenshots, understands layouts, detects components, extracts text, and generates frontend code automatically. The goal is to build an intelligent design-to-code system capable of producing production-ready HTML, CSS, JavaScript, React, and Tailwind code from a single image.
 
 ## Features
-
+ 
 * Screenshot Upload
 * UI Layout Analysis
 * Component Detection
