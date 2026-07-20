@@ -1,212 +1,364 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ui2code | Screenshot to frontend code</title>
-    <link rel="stylesheet" href="../static/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ui2code — Screenshot to Frontend Code</title>
+  <meta name="description" content="Upload a UI screenshot. ui2code detects components, extracts text, understands layouts, and generates production-ready HTML, CSS, React, and Tailwind code automatically.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
 </head>
-<body class="home-page scenic-home">
-    <header class="figma-header">
-        <a class="figma-brand" href="/" aria-label="ui2code home">
-            <span class="ui2code-logo" aria-hidden="true">
-                <svg viewBox="0 0 56 56" role="img">
-                    <rect x="7" y="7" width="42" height="42" rx="14"/>
-                    <path d="M22 20 15 28l7 8"/>
-                    <path d="M34 20l7 8-7 8"/>
-                    <path d="M29.5 17 26.5 39"/>
-                    <circle cx="20" cy="17" r="3"/>
-                    <circle cx="39" cy="17" r="3"/>
-                    <circle cx="17" cy="39" r="3"/>
-                    <circle cx="38" cy="39" r="3"/>
-                    <path d="M22.5 18.5 31.5 18.5 36.5 36.5"/>
-                    <path d="M19.5 36.5 27.5 28 37 28"/>
-                </svg>
-            </span>
-            <strong>ui2code</strong>
-        </a>
+<body>
 
-        <nav class="figma-nav" aria-label="Primary navigation">
-            <a href="#product">Product</a>
-            <a href="#studio">Studio</a>
-            <a href="#features">Features</a>
-            <a href="#demo">Demo</a>
-        </nav>
+  <!-- NAV -->
+  <header class="nav" id="nav">
+    <a class="nav__brand" href="/" aria-label="ui2code home">
+      <span class="nav__logo" aria-hidden="true">
+        <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="36" height="36" rx="10" fill="url(#lg1)"/>
+          <path d="M12 13L8 18l4 5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M24 13l4 5-4 5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M20 11l-4 14" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round"/>
+          <defs>
+            <linearGradient id="lg1" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#6366f1"/>
+              <stop offset="1" stop-color="#8b5cf6"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </span>
+      <strong>ui2code</strong>
+    </a>
 
-        <div class="figma-actions">
-            <a href="#features" class="outline-pill">View features</a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#features">Features</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#upload">Studio</a>
+    </nav>
+
+    <div class="nav__actions">
+      <a href="#upload" class="btn btn--primary btn--sm">Try it free →</a>
+    </div>
+
+    <button class="nav__burger" aria-label="Toggle menu" id="navBurger">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+      <div class="hero__bg" aria-hidden="true">
+        <div class="hero__orb hero__orb--1"></div>
+        <div class="hero__orb hero__orb--2"></div>
+        <div class="hero__orb hero__orb--3"></div>
+        <div class="hero__grid"></div>
+      </div>
+
+      <div class="hero__content">
+        <span class="badge badge--purple reveal">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><circle cx="6" cy="6" r="4"/></svg>
+          AI-Powered Design-to-Code
+        </span>
+        <h1 class="reveal">Turn any UI screenshot<br>into <em>production code</em></h1>
+        <p class="hero__sub reveal">
+          ui2code analyzes your interface screenshot, understands layouts, detects every component, extracts all text, and generates clean HTML, CSS, React, and Tailwind — in seconds.
+        </p>
+        <div class="hero__cta reveal">
+          <a href="#upload" class="btn btn--primary btn--lg">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Upload Screenshot
+          </a>
+          <a href="#how-it-works" class="btn btn--ghost btn--lg">See how it works</a>
         </div>
-    </header>
+        <div class="hero__trust reveal">
+          <span>✓ No sign-up needed</span>
+          <span>✓ React, Next.js, HTML/CSS</span>
+          <span>✓ Tailwind output</span>
+        </div>
+      </div>
 
-    <main>
-        <section class="scenic-hero" id="product">
-            <div class="scenic-gallery" aria-hidden="true">
-                <article class="scene-card scene-one">
-                    <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80" alt="">
-                </article>
-                <article class="scene-card scene-two">
-                    <img src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&w=900&q=80" alt="">
-                </article>
-                <article class="scene-card scene-three">
-                    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80" alt="">
-                </article>
-                <article class="scene-card scene-four">
-                    <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=900&q=80" alt="">
-                </article>
-                <article class="scene-card scene-five">
-                    <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=900&q=80" alt="">
-                </article>
+      <!-- Floating mock UI cards -->
+      <div class="hero__mockups reveal" aria-hidden="true">
+        <div class="mock-card mock-card--dashboard">
+          <div class="mock-bar"><span></span><span></span><span></span></div>
+          <div class="mock-dash-grid">
+            <div class="mock-stat"><strong>2.4k</strong><small>Users</small></div>
+            <div class="mock-stat"><strong>98%</strong><small>Score</small></div>
+            <div class="mock-stat"><strong>$12k</strong><small>MRR</small></div>
+          </div>
+          <div class="mock-chart"></div>
+          <div class="mock-lines">
+            <span style="width:80%"></span>
+            <span style="width:55%"></span>
+          </div>
+        </div>
+        <div class="mock-card mock-card--code">
+          <div class="mock-bar"><span></span><span></span><span></span></div>
+          <div class="mock-code-line"><em class="kw">export</em> <em class="kw">function</em> <span class="fn">Hero</span><span class="p">()</span> <span class="p">&#123;</span></div>
+          <div class="mock-code-line pl1"><em class="kw">return</em> <span class="p">(</span></div>
+          <div class="mock-code-line pl2"><span class="tag">&lt;section</span> <span class="attr">className</span><span class="p">=</span><span class="str">"hero"</span><span class="tag">&gt;</span></div>
+          <div class="mock-code-line pl3"><span class="tag">&lt;h1&gt;</span><span class="text">Hello World</span><span class="tag">&lt;/h1&gt;</span></div>
+          <div class="mock-code-line pl2"><span class="tag">&lt;/section&gt;</span></div>
+          <div class="mock-code-line pl1"><span class="p">)</span></div>
+          <div class="mock-code-line"><span class="p">&#125;</span></div>
+        </div>
+        <div class="mock-card mock-card--mobile">
+          <div class="mock-notch"></div>
+          <div class="mock-mob-card"></div>
+          <div class="mock-lines">
+            <span style="width:90%"></span>
+            <span style="width:65%"></span>
+            <span style="width:40%"></span>
+          </div>
+          <div class="mock-mob-btn"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- UPLOAD STUDIO -->
+    <section class="upload-section" id="upload">
+      <div class="upload-section__inner">
+        <div class="section-label reveal">
+          <span class="badge badge--green">Interactive Studio</span>
+        </div>
+        <h2 class="reveal">Drop your screenshot.<br>Get real frontend code.</h2>
+        <p class="section-sub reveal">Supports website, dashboard, mobile app, Figma frame, wireframe, or any UI screenshot.</p>
+
+        <div class="studio-card reveal">
+          <div class="studio-card__header">
+            <div>
+              <span class="eyebrow">Screenshot Input</span>
+              <h3>Upload your UI</h3>
             </div>
+            <span class="status-pill" id="studioState">Ready</span>
+          </div>
 
-            <section class="hero-glass-card reveal">
-                <div>
-                    <span class="green-kicker">AI frontend studio</span>
-                    <h1>Turn UI screenshots into production-ready frontend systems.</h1>
-                    <p>
-                        ui2code understands layouts, components, design systems, and hierarchy before generating clean HTML, CSS, JavaScript, React, and Tailwind code.
-                    </p>
-                </div>
-                <div class="hero-card-actions">
-                    <a href="#studio" class="mint-button">Generate Code</a>
-                </div>
-            </section>
-
-            <p class="hero-caption reveal">
-                Upload a screenshot. ui2code reads the interface like a frontend engineer, then packages the generated project.
-            </p>
-        </section>
-
-        <section class="studio-wrap reveal" id="studio">
-            <div class="studio-copy">
-                <span class="green-kicker">Interactive upload studio</span>
-                <h2>Drop your screen and generate a real project.</h2>
+          <label class="dropzone" for="imageInput" id="dropzone" role="button" aria-label="Drop or click to upload a UI screenshot">
+            <input type="file" id="imageInput" accept="image/png,image/jpeg,image/webp" aria-hidden="true">
+            <div class="dropzone__icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M24 34V14"/><path d="m16 22 8-8 8 8"/><path d="M12 36h24"/>
+              </svg>
             </div>
+            <strong>Drop a UI screenshot here</strong>
+            <small>or click to browse — PNG, JPG, WEBP up to 10MB</small>
+          </label>
 
-            <section class="studio-card scenic-studio" aria-label="Upload studio">
-                <div class="studio-card-header">
-                    <div>
-                        <span class="card-kicker">Screenshot input</span>
-                        <h2>Upload UI</h2>
-                    </div>
-                    <span class="live-pill" id="studioState">Ready</span>
-                </div>
+          <img id="preview" class="upload-preview" alt="Selected screenshot preview">
 
-                <label class="dropzone premium-dropzone" for="imageInput" id="dropzone">
-                    <input type="file" id="imageInput" accept="image/png,image/jpeg,image/webp">
-                    <span class="upload-orb" aria-hidden="true">
-                        <svg viewBox="0 0 48 48">
-                            <path d="M24 34V14"/>
-                            <path d="m16 22 8-8 8 8"/>
-                            <path d="M12 34h24"/>
-                        </svg>
-                    </span>
-                    <strong>Drop a UI screenshot</strong>
-                    <small>Website, dashboard, mobile app, Figma frame, wireframe, or SaaS screen</small>
-                </label>
-
-                <img id="preview" class="upload-preview" alt="Selected screenshot preview">
-
-                <div class="scan-panel" id="scanPanel" aria-live="polite">
-                    <div class="scan-line"></div>
-                    <div class="progress-track"><span id="progressBar"></span></div>
-                    <ol class="pipeline-list" id="pipelineList">
-                        <li class="active">Screenshot</li>
-                        <li>OCR</li>
-                        <li>Component Detection</li>
-                        <li>Layout Intelligence</li>
-                        <li>React Generation</li>
-                        <li>Code Output</li>
-                    </ol>
-                </div>
-
-                <button type="button" id="uploadBtn" class="wide-button mint-submit">Generate Code</button>
-                <p class="upload-note" id="uploadStatus">Supports PNG, JPG, JPEG, and WEBP.</p>
-            </section>
-        </section>
-
-        <section class="features-section scenic-features" id="features">
-            <div class="section-heading reveal">
-                <span class="green-kicker">What ui2code understands</span>
-                <h2>From screenshot to structured frontend output.</h2>
+          <div class="pipeline-panel" id="scanPanel" aria-live="polite" aria-label="Processing pipeline">
+            <div class="pipeline-scan" aria-hidden="true"></div>
+            <div class="pipeline-track" role="progressbar" aria-label="Processing progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+              <span id="progressBar"></span>
             </div>
+            <ol class="pipeline-steps" id="pipelineList">
+              <li>Screenshot loaded</li>
+              <li>OCR extraction</li>
+              <li>Component detection</li>
+              <li>Layout intelligence</li>
+              <li>Code generation</li>
+              <li>Project ready</li>
+            </ol>
+          </div>
 
-            <div class="feature-grid">
-                <article class="feature-card reveal">
-                    <span class="feature-icon">Aa</span>
-                    <h3>OCR Extraction</h3>
-                    <p>Extracts visible text and keeps it connected to the original UI context.</p>
-                </article>
-                <article class="feature-card reveal">
-                    <span class="feature-icon">[]</span>
-                    <h3>Component Detection</h3>
-                    <p>Detects buttons, cards, forms, images, navigation bars, menus, and sections.</p>
-                </article>
-                <article class="feature-card reveal">
-                    <span class="feature-icon">#</span>
-                    <h3>Layout Intelligence</h3>
-                    <p>Understands spacing, alignment, hierarchy, grids, columns, and responsiveness.</p>
-                </article>
-                <article class="feature-card reveal">
-                    <span class="feature-icon">&lt;/&gt;</span>
-                    <h3>Code Generation</h3>
-                    <p>Generates HTML, CSS, JavaScript, React, Next.js, and Tailwind project files.</p>
-                </article>
-                <article class="feature-card reveal">
-                    <span class="feature-icon">◐</span>
-                    <h3>Design System Extraction</h3>
-                    <p>Extracts colors, fonts, shadows, spacing, radii, and reusable tokens.</p>
-                </article>
-                <article class="feature-card reveal">
-                    <span class="feature-icon">✦</span>
-                    <h3>AI Reasoning</h3>
-                    <p>Infers component purpose, hierarchy, naming, accessibility, and responsive intent.</p>
-                </article>
-            </div>
-        </section>
+          <button type="button" id="uploadBtn" class="btn btn--primary btn--full">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Generate Code
+          </button>
+          <p class="upload-note" id="uploadStatus" role="status">Supports PNG, JPG, JPEG, and WEBP.</p>
+        </div>
+      </div>
+    </section>
 
-        <section class="demo-section scenic-demo reveal" id="demo">
-            <div class="demo-copy">
-                <span class="green-kicker">Live preview style</span>
-                <h2>Clean visual input. Clean code output.</h2>
+    <!-- HOW IT WORKS -->
+    <section class="how-section" id="how-it-works">
+      <div class="how-section__inner">
+        <div class="section-label reveal">
+          <span class="badge badge--blue">The Pipeline</span>
+        </div>
+        <h2 class="reveal">From screenshot to code<br>in one intelligent pipeline</h2>
+        <p class="section-sub reveal">Every stage builds on the last — giving you accurate, structured frontend output.</p>
+
+        <div class="pipeline-flow">
+          <div class="pipeline-step reveal">
+            <div class="pipeline-step__num">01</div>
+            <div class="pipeline-step__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
             </div>
-            <div class="demo-split">
-                <div class="demo-screen scenic-preview">
-                    <div class="mock-browser"><span></span><span></span><span></span></div>
-                    <div class="mock-scenic"></div>
-                    <div class="mock-grid"><span></span><span></span><span></span></div>
+            <h3>Screenshot Upload</h3>
+            <p>Upload any UI — websites, apps, dashboards, Figma frames, or wireframes. WEBP, PNG, and JPG accepted.</p>
+          </div>
+          <div class="pipeline-step reveal">
+            <div class="pipeline-step__num">02</div>
+            <div class="pipeline-step__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h8M4 18h12"/></svg>
+            </div>
+            <h3>OCR Text Extraction</h3>
+            <p>EasyOCR reads every visible text element and classifies it as heading, subheading, button text, label, or caption.</p>
+          </div>
+          <div class="pipeline-step reveal">
+            <div class="pipeline-step__num">03</div>
+            <div class="pipeline-step__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="6" height="6" rx="1"/><rect x="9" y="3" width="6" height="6" rx="1"/><rect x="16" y="3" width="6" height="6" rx="1"/><rect x="2" y="10" width="6" height="11" rx="1"/><rect x="9" y="10" width="13" height="5" rx="1"/><rect x="9" y="16" width="13" height="5" rx="1"/></svg>
+            </div>
+            <h3>Component Detection</h3>
+            <p>OpenCV and optional YOLOv8 detect buttons, cards, navbars, forms, images, containers, sidebars, and modals.</p>
+          </div>
+          <div class="pipeline-step reveal">
+            <div class="pipeline-step__num">04</div>
+            <div class="pipeline-step__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <h3>Layout Intelligence</h3>
+            <p>Spacing, alignment, grids, and flex patterns are inferred and turned into semantic layout relationships.</p>
+          </div>
+          <div class="pipeline-step reveal">
+            <div class="pipeline-step__num">05</div>
+            <div class="pipeline-step__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+            </div>
+            <h3>AI Reasoning</h3>
+            <p>Components get semantic names, ARIA labels, responsive hints, and accessibility roles — optionally powered by GPT-4.</p>
+          </div>
+          <div class="pipeline-step reveal">
+            <div class="pipeline-step__num">06</div>
+            <div class="pipeline-step__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            </div>
+            <h3>Code Generation</h3>
+            <p>Output as a full Next.js + Tailwind project, a React app, or vanilla HTML/CSS/JS — download as a ready-to-run ZIP.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features-section" id="features">
+      <div class="features-section__inner">
+        <div class="section-label reveal">
+          <span class="badge badge--purple">Capabilities</span>
+        </div>
+        <h2 class="reveal">Everything a frontend engineer<br>needs — automated</h2>
+
+        <div class="feature-grid">
+          <article class="feature-card reveal">
+            <div class="feature-card__icon feature-card__icon--blue">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h8M4 18h12"/></svg>
+            </div>
+            <h3>OCR Extraction</h3>
+            <p>Captures every text element and preserves its semantic role — headings, labels, buttons, captions — so generated code stays accurate.</p>
+          </article>
+          <article class="feature-card reveal">
+            <div class="feature-card__icon feature-card__icon--violet">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="6" height="6" rx="1"/><rect x="9" y="3" width="6" height="6" rx="1"/><rect x="16" y="3" width="6" height="6" rx="1"/><rect x="2" y="14" width="20" height="7" rx="1"/></svg>
+            </div>
+            <h3>Component Detection</h3>
+            <p>Finds buttons, cards, navbars, forms, images, sidebars, modals, and containers — with confidence scores for each detection.</p>
+          </article>
+          <article class="feature-card reveal">
+            <div class="feature-card__icon feature-card__icon--emerald">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            </div>
+            <h3>Layout Intelligence</h3>
+            <p>Reads spacing, alignment, grids, and nesting relationships. Converts absolute pixel positions into semantic flex and grid layouts.</p>
+          </article>
+          <article class="feature-card reveal">
+            <div class="feature-card__icon feature-card__icon--orange">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+            </div>
+            <h3>Design System Extraction</h3>
+            <p>K-means color clustering extracts your palette. Typography scale, spacing, border radii, and shadows are captured as CSS custom properties.</p>
+          </article>
+          <article class="feature-card reveal">
+            <div class="feature-card__icon feature-card__icon--blue">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            </div>
+            <h3>Multi-Framework Output</h3>
+            <p>Generate Next.js + Tailwind, React + Tailwind, or plain HTML/CSS/JS — all from the same screenshot, packaged as a runnable project ZIP.</p>
+          </article>
+          <article class="feature-card reveal">
+            <div class="feature-card__icon feature-card__icon--violet">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
+            </div>
+            <h3>Accessibility Built-in</h3>
+            <p>Generated components ship with ARIA roles, labels, and semantic HTML elements — so your code starts accessible by default.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- DEMO SECTION -->
+    <section class="demo-section reveal" id="demo">
+      <div class="demo-section__inner">
+        <div class="demo-left">
+          <span class="badge badge--green">Live output preview</span>
+          <h2>Clean screenshot.<br>Production-ready code.</h2>
+          <p>The analysis studio shows your extracted component hierarchy, design system tokens, layout intelligence, and all generated files — side by side with your original screenshot.</p>
+          <a href="#upload" class="btn btn--primary" style="margin-top:28px;">Start generating →</a>
+        </div>
+        <div class="demo-right">
+          <div class="demo-browser">
+            <div class="demo-browser__bar">
+              <span class="demo-dot demo-dot--red"></span>
+              <span class="demo-dot demo-dot--yellow"></span>
+              <span class="demo-dot demo-dot--green"></span>
+              <span class="demo-url">ui2code studio</span>
+            </div>
+            <div class="demo-browser__body">
+              <div class="demo-split">
+                <div class="demo-screenshot">
+                  <div class="demo-mock-nav"></div>
+                  <div class="demo-mock-hero"></div>
+                  <div class="demo-mock-cards">
+                    <span></span><span></span><span></span>
+                  </div>
                 </div>
-                <div class="code-editor">
-                    <div class="editor-tabs"><span>Generated.jsx</span><span>style.css</span></div>
-                    <pre><code>&lt;main className="generated-page"&gt;
-  &lt;Navigation /&gt;
-  &lt;Hero /&gt;
-  &lt;ResponsiveSections /&gt;
-&lt;/main&gt;</code></pre>
+                <div class="demo-code">
+                  <div class="demo-code__tabs">
+                    <span class="active">App.jsx</span>
+                    <span>style.css</span>
+                    <span>index.html</span>
+                  </div>
+                  <div class="demo-code__body">
+                    <div class="dc-line"><span class="dc-kw">import</span> React <span class="dc-kw">from</span> <span class="dc-str">'react'</span></div>
+                    <div class="dc-line dc-blank"></div>
+                    <div class="dc-line"><span class="dc-kw">export default function</span> <span class="dc-fn">App</span><span class="dc-p">()</span> <span class="dc-p">&#123;</span></div>
+                    <div class="dc-line pl1"><span class="dc-kw">return</span> <span class="dc-p">(</span></div>
+                    <div class="dc-line pl2"><span class="dc-tag">&lt;main</span> <span class="dc-attr">className</span>=<span class="dc-str">"page"</span><span class="dc-tag">&gt;</span></div>
+                    <div class="dc-line pl3"><span class="dc-tag">&lt;Navigation</span> <span class="dc-tag">/&gt;</span></div>
+                    <div class="dc-line pl3"><span class="dc-tag">&lt;Hero</span> <span class="dc-tag">/&gt;</span></div>
+                    <div class="dc-line pl3"><span class="dc-tag">&lt;FeatureGrid</span> <span class="dc-tag">/&gt;</span></div>
+                    <div class="dc-line pl2"><span class="dc-tag">&lt;/main&gt;</span></div>
+                    <div class="dc-line pl1"><span class="dc-p">)</span></div>
+                    <div class="dc-line"><span class="dc-p">&#125;</span></div>
+                  </div>
                 </div>
+              </div>
             </div>
-        </section>
-    </main>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <footer class="site-footer scenic-footer">
-        <a class="figma-brand" href="/">
-            <span class="ui2code-logo" aria-hidden="true">
-                <svg viewBox="0 0 56 56" role="img">
-                    <rect x="7" y="7" width="42" height="42" rx="14"/>
-                    <path d="M22 20 15 28l7 8"/>
-                    <path d="M34 20l7 8-7 8"/>
-                    <path d="M29.5 17 26.5 39"/>
-                    <circle cx="20" cy="17" r="3"/>
-                    <circle cx="39" cy="17" r="3"/>
-                    <circle cx="17" cy="39" r="3"/>
-                    <circle cx="38" cy="39" r="3"/>
-                    <path d="M22.5 18.5 31.5 18.5 36.5 36.5"/>
-                    <path d="M19.5 36.5 27.5 28 37 28"/>
-                </svg>
-            </span>
-            <strong>ui2code</strong>
-        </a>
-    </footer>
+  </main>
 
-    <script src="../static/script.js"></script>
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <a class="nav__brand" href="/">
+        <span class="nav__logo" aria-hidden="true">
+          <svg viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="10" fill="url(#lg2)"/><path d="M12 13L8 18l4 5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 13l4 5-4 5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 11l-4 14" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round"/><defs><linearGradient id="lg2" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse"><stop stop-color="#6366f1"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs></svg>
+        </span>
+        <strong>ui2code</strong>
+      </a>
+      <p class="site-footer__copy">Built by <strong>Smriti Prajapati</strong> · AI-powered screenshot-to-code platform</p>
+      <p class="site-footer__copy site-footer__copy--muted">© 2025 ui2code · Open source</p>
+    </div>
+  </footer>
+
+  <script src="/static/script.js"></script>
 </body>
 </html>

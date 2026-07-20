@@ -1,0 +1,21 @@
+# Minimal production requirements — no YOLO, no Torch, no heavy ML
+# Uses OpenCV fallback detection + EasyOCR only
+# Fits in ~700MB RAM (works on Hugging Face Spaces free tier)
+
+flask==3.0.3
+flask-cors==4.0.1
+werkzeug==3.0.3
+python-dotenv==1.0.1
+
+# Image processing
+opencv-python-headless==4.9.0.80
+Pillow==10.3.0
+numpy==1.26.4
+scikit-image==0.22.0
+scikit-learn==1.4.2
+
+# OCR
+easyocr==1.7.1
+
+# Utilities
+requests==2.32.3

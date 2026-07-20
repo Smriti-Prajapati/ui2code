@@ -23,3 +23,7 @@ build/
 .next/
 
 *.zip
+
+# HF Spaces / deployment
+.env.local
+frontend/.env.local

@@ -1,125 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ui2code Studio</title>
-    <link rel="stylesheet" href="../static/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ui2code Studio</title>
+  <meta name="description" content="ui2code analysis studio — view component hierarchy, design system, layout intelligence, and generated code.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
 </head>
-<body class="editor-page" data-image-file="{{ image_file }}">
-    <main class="analysis-shell">
-        <aside class="preview-pane">
-            <div class="editor-topbar">
-                <a class="brand compact" href="/">
-                    <span class="ui2code-logo" aria-hidden="true">
-                        <svg viewBox="0 0 56 56" role="img">
-                            <rect x="7" y="7" width="42" height="42" rx="14"/>
-                            <path d="M22 20 15 28l7 8"/>
-                            <path d="M34 20l7 8-7 8"/>
-                            <path d="M29.5 17 26.5 39"/>
-                            <circle cx="20" cy="17" r="3"/>
-                            <circle cx="39" cy="17" r="3"/>
-                            <circle cx="17" cy="39" r="3"/>
-                            <circle cx="38" cy="39" r="3"/>
-                            <path d="M22.5 18.5 31.5 18.5 36.5 36.5"/>
-                            <path d="M19.5 36.5 27.5 28 37 28"/>
-                        </svg>
-                    </span>
-                    <span>ui2code</span>
-                </a>
-                <a class="ghost-link" href="/">New upload</a>
+<body class="studio" data-image-file="{{ image_file }}">
+
+  <div class="studio-shell">
+
+    <!-- LEFT PANE: source + controls -->
+    <aside class="studio-left" role="complementary" aria-label="Source image and controls">
+      <div class="studio-left__top">
+        <a class="studio-brand" href="/" aria-label="ui2code home">
+          <span class="nav__logo" aria-hidden="true">
+            <svg viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="10" fill="url(#slg)"/><path d="M12 13L8 18l4 5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 13l4 5-4 5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 11l-4 14" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round"/><defs><linearGradient id="slg" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse"><stop stop-color="#6366f1"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs></svg>
+          </span>
+          <strong>ui2code</strong>
+        </a>
+        <a class="btn btn--ghost btn--sm" href="/">← New upload</a>
+      </div>
+
+      <div class="source-card">
+        <div class="source-card__header">
+          <div>
+            <span class="eyebrow">Source screenshot</span>
+            <h2>Visual input</h2>
+          </div>
+          <span class="status-pill" id="stagePill">Idle</span>
+        </div>
+        <div class="source-card__img-wrap">
+          <img class="source-img" id="sourceScreenshot" src="/uploads/{{ image_file }}" alt="Uploaded UI screenshot">
+          <div class="source-warning hidden" id="directFileWarning">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Open via the Flask server to load screenshots and run analysis.
+          </div>
+        </div>
+      </div>
+
+      <div class="studio-left__controls">
+        <div class="framework-row">
+          <label for="frameworkSelect" class="ctrl-label">Framework</label>
+          <select id="frameworkSelect" class="ctrl-select" aria-label="Select output framework">
+            <option value="nextjs">Next.js + Tailwind</option>
+            <option value="react">React + Tailwind</option>
+            <option value="html">HTML / CSS / JS</option>
+          </select>
+        </div>
+
+        <button type="button" id="analyzeBtn" class="btn btn--primary btn--full btn--icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+          Analyze Screenshot
+        </button>
+
+        <a id="downloadBtn" class="btn btn--secondary btn--full btn--icon" href="/download/{{ image_file }}" download>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download ZIP
+        </a>
+      </div>
+    </aside>
+
+    <!-- RIGHT PANE: inspector -->
+    <section class="studio-right" aria-label="Analysis results">
+      <div class="inspector-header">
+        <div>
+          <span class="eyebrow">Intermediate Representation</span>
+          <h1>Reasoned UI system</h1>
+        </div>
+        <div class="status-bar" id="statusBar" role="status" aria-live="polite">Ready to analyze</div>
+      </div>
+
+      <!-- Metrics -->
+      <div class="metrics-row" id="metricsGrid" aria-label="Analysis scores">
+        <div class="metric-card skeleton"><span class="metric-label">Components</span><strong class="metric-value">—</strong></div>
+        <div class="metric-card skeleton"><span class="metric-label">OCR</span><strong class="metric-value">—</strong></div>
+        <div class="metric-card skeleton"><span class="metric-label">Layout</span><strong class="metric-value">—</strong></div>
+        <div class="metric-card skeleton"><span class="metric-label">Visual</span><strong class="metric-value">—</strong></div>
+        <div class="metric-card skeleton"><span class="metric-label">Code</span><strong class="metric-value">—</strong></div>
+        <div class="metric-card skeleton metric-card--highlight"><span class="metric-label">Overall</span><strong class="metric-value">—</strong></div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tab-bar" role="tablist" aria-label="Analysis panels">
+        <button class="tab-btn active" data-tab="hierarchy" role="tab" aria-selected="true" aria-controls="hierarchyPanel" type="button">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6l4-4 4 4"/><path d="M12 2v10.3"/><path d="M4 18h16"/><path d="M4 14h6"/><path d="M14 14h6"/><path d="M4 22h6"/><path d="M14 22h6"/></svg>
+          Hierarchy
+        </button>
+        <button class="tab-btn" data-tab="design" role="tab" aria-selected="false" aria-controls="designPanel" type="button">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="19" cy="17" r="2"/><circle cx="6.5" cy="17" r="2.5"/><path d="M13.5 9S6 11 5 18"/><path d="M9 17.5C9 17.5 10 14 13.5 12"/><path d="M17.5 17c0 0-2.5-5-4-5.5"/></svg>
+          Design
+        </button>
+        <button class="tab-btn" data-tab="layout" role="tab" aria-selected="false" aria-controls="layoutPanel" type="button">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          Layout
+        </button>
+        <button class="tab-btn" data-tab="code" role="tab" aria-selected="false" aria-controls="codePanel" type="button">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          Code
+        </button>
+        <button class="tab-btn" data-tab="raw" role="tab" aria-selected="false" aria-controls="rawPanel" type="button">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          JSON
+        </button>
+      </div>
+
+      <!-- Panels -->
+      <div class="panels">
+
+        <section class="panel active" id="hierarchyPanel" role="tabpanel" aria-labelledby="tab-hierarchy">
+          <div class="panel__head">
+            <div>
+              <h2>Component Hierarchy</h2>
+              <p>Semantic page tree inferred from layout and component positions</p>
             </div>
-
-            <section class="screen-stage">
-                <div class="stage-header">
-                    <div>
-                        <span class="card-kicker">Source screenshot</span>
-                        <h1>Visual input</h1>
-                    </div>
-                    <span class="live-pill" id="stagePill">Idle</span>
-                </div>
-                <img class="screenshot" id="sourceScreenshot" src="/uploads/{{ image_file }}" alt="Uploaded UI screenshot">
-                <div class="direct-file-warning" id="directFileWarning">
-                    Open the app from the Flask server to load uploaded screenshots and run analysis.
-                </div>
-            </section>
-
-            <button id="analyzeBtn" class="wide-button analysis-button" type="button">Analyze Screenshot</button>
-            <a id="downloadBtn" class="wide-button download-button" href="/download/{{ image_file }}">Download Generated Website</a>
-        </aside>
-
-        <section class="inspector-pane">
-            <div class="inspector-header">
-                <div>
-                    <span class="eyebrow">Intermediate representation</span>
-                    <h2>Reasoned UI system</h2>
-                </div>
-                <div class="status-bar" id="statusBar">Ready to analyze</div>
-            </div>
-
-            <div class="metrics-grid" id="metricsGrid">
-                <div class="metric skeleton"><span>Components</span><strong>-</strong></div>
-                <div class="metric skeleton"><span>OCR</span><strong>-</strong></div>
-                <div class="metric skeleton"><span>Layout</span><strong>-</strong></div>
-                <div class="metric skeleton"><span>Visual</span><strong>-</strong></div>
-                <div class="metric skeleton"><span>Code</span><strong>-</strong></div>
-                <div class="metric skeleton"><span>Overall</span><strong>-</strong></div>
-            </div>
-
-            <div class="tabs" role="tablist" aria-label="Analysis sections">
-                <button class="tab active" data-tab="hierarchy" type="button">Hierarchy</button>
-                <button class="tab" data-tab="design" type="button">Design</button>
-                <button class="tab" data-tab="layout" type="button">Layout</button>
-                <button class="tab" data-tab="code" type="button">Code</button>
-                <button class="tab" data-tab="raw" type="button">JSON</button>
-            </div>
-
-            <section class="panel active" id="hierarchyPanel">
-                <div class="panel-title">
-                    <h3>Component Hierarchy</h3>
-                    <span>Semantic page tree</span>
-                </div>
-                <pre id="hierarchyOutput" class="empty-pre">Run analysis to see inferred components.</pre>
-            </section>
-
-            <section class="panel" id="designPanel">
-                <div class="panel-title">
-                    <h3>Design System</h3>
-                    <span>Colors, type, spacing, radii, shadows</span>
-                </div>
-                <div class="palette" id="paletteOutput"></div>
-                <pre id="designOutput" class="empty-pre">Run analysis to extract design tokens.</pre>
-            </section>
-
-            <section class="panel" id="layoutPanel">
-                <div class="panel-title">
-                    <h3>Layout Intelligence</h3>
-                    <span>Rows, grids, alignment, spacing</span>
-                </div>
-                <pre id="layoutOutput" class="empty-pre">Run analysis to inspect layout reasoning.</pre>
-            </section>
-
-            <section class="panel" id="codePanel">
-                <div class="code-header">
-                    <div class="panel-title">
-                        <h3>Generated Project</h3>
-                        <span>Next.js, React, Tailwind, HTML/CSS/JS</span>
-                    </div>
-                    <select id="fileSelect" aria-label="Generated file"></select>
-                </div>
-                <textarea id="codeOutput" spellcheck="false" placeholder="Generated files will appear here."></textarea>
-            </section>
-
-            <section class="panel" id="rawPanel">
-                <div class="panel-title">
-                    <h3>Full JSON</h3>
-                    <span>Complete screenshot-to-code analysis payload</span>
-                </div>
-                <pre id="rawOutput" class="empty-pre">Run analysis to view the full intermediate representation.</pre>
-            </section>
+            <button class="btn btn--ghost btn--sm copy-btn" data-target="hierarchyOutput" type="button">Copy</button>
+          </div>
+          <pre id="hierarchyOutput" class="code-block" aria-label="Component hierarchy JSON">Run analysis to see inferred component tree.</pre>
         </section>
-    </main>
 
-    <script src="../static/editor.js"></script>
+        <section class="panel" id="designPanel" role="tabpanel" aria-labelledby="tab-design">
+          <div class="panel__head">
+            <div>
+              <h2>Design System</h2>
+              <p>Extracted colors, typography, spacing, radii, and shadows</p>
+            </div>
+            <button class="btn btn--ghost btn--sm copy-btn" data-target="designOutput" type="button">Copy</button>
+          </div>
+          <div class="palette-strip" id="paletteOutput" aria-label="Extracted color palette"></div>
+          <pre id="designOutput" class="code-block" aria-label="Design system JSON">Run analysis to extract design tokens.</pre>
+        </section>
+
+        <section class="panel" id="layoutPanel" role="tabpanel" aria-labelledby="tab-layout">
+          <div class="panel__head">
+            <div>
+              <h2>Layout Intelligence</h2>
+              <p>Rows, grids, alignment patterns, and spacing analysis</p>
+            </div>
+            <button class="btn btn--ghost btn--sm copy-btn" data-target="layoutOutput" type="button">Copy</button>
+          </div>
+          <pre id="layoutOutput" class="code-block" aria-label="Layout intelligence JSON">Run analysis to inspect layout reasoning.</pre>
+        </section>
+
+        <section class="panel" id="codePanel" role="tabpanel" aria-labelledby="tab-code">
+          <div class="panel__head">
+            <div>
+              <h2>Generated Project</h2>
+              <p>Next.js, React, and HTML/CSS/JS output files</p>
+            </div>
+            <div class="code-panel-controls">
+              <select id="fileSelect" class="ctrl-select ctrl-select--sm" aria-label="Select generated file"></select>
+              <button class="btn btn--ghost btn--sm copy-btn" data-target="codeOutput" type="button">Copy</button>
+            </div>
+          </div>
+          <textarea id="codeOutput" class="code-editor-area" spellcheck="false" placeholder="Generated files will appear here after analysis." aria-label="Generated code editor"></textarea>
+        </section>
+
+        <section class="panel" id="rawPanel" role="tabpanel" aria-labelledby="tab-raw">
+          <div class="panel__head">
+            <div>
+              <h2>Full JSON</h2>
+              <p>Complete screenshot-to-code analysis payload</p>
+            </div>
+            <button class="btn btn--ghost btn--sm copy-btn" data-target="rawOutput" type="button">Copy</button>
+          </div>
+          <pre id="rawOutput" class="code-block" aria-label="Full analysis JSON">Run analysis to view the complete intermediate representation.</pre>
+        </section>
+
+      </div>
+    </section>
+
+  </div>
+
+  <script src="/static/editor.js"></script>
 </body>
 </html>

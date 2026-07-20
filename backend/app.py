@@ -18,9 +18,17 @@ app = Flask(__name__)
 app.config.from_object(Config)
 app.config["MAX_CONTENT_LENGTH"] = Config.MAX_FILE_SIZE
 Config.init_app(app)
-CORS(app)
 
-pipeline = None
+# CORS — allow Next.js frontend (localhost dev + Vercel production)
+_allowed_origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    os.getenv("FRONTEND_URL", ""),          # e.g. https://ui2code.vercel.app
+    os.getenv("FRONTEND_URL_ALT", ""),      # extra alias if needed
+]
+CORS(app, origins=[o for o in _allowed_origins if o], supports_credentials=True)
+
+pipeline: UI2CodePipeline | None = None
 
 
 def get_pipeline() -> UI2CodePipeline:
@@ -38,35 +46,24 @@ def build_project_readme(result: dict) -> str:
     image = result.get("image", {})
     evaluation = result.get("evaluation", {})
     files = result.get("generated_project", {}).get("files", {})
-
     return f"""# UI2CODE Generated Project
 
-This project was generated from a UI screenshot using visual understanding, OCR semantics, layout intelligence, design-system extraction, hierarchy reasoning, and code generation.
+Generated from a UI screenshot using visual understanding, OCR, layout intelligence,
+design-system extraction, hierarchy reasoning, and code generation.
 
 ## Source
-
 - Screenshot: {image.get("filename", "uploaded image")}
 - Size: {image.get("width", "-")}x{image.get("height", "-")}
 - Components detected: {result.get("visual_understanding", {}).get("component_count", 0)}
-- Overall evaluation score: {evaluation.get("overall_score", 0)}
+- Overall score: {evaluation.get("overall_score", 0):.2f}
 
-## Run the Next.js project
-
+## Run
 ```bash
-npm install
-npm run dev
+npm install && npm run dev
 ```
 
-## Included
-
-- `project/`: deployable Next.js + Tailwind project files
-- `static-html/`: standalone HTML/CSS/JS fallback
-- `analysis/`: hierarchy, design system, layout intelligence, OCR semantics, and evaluation JSON
-- `assets/`: original screenshot
-
-## Generated files
-
-{chr(10).join(f"- `{path}`" for path in sorted(files))}
+## Files
+{chr(10).join(f"- `{p}`" for p in sorted(files))}
 """
 
 
@@ -74,26 +71,27 @@ def write_json(zf: zipfile.ZipFile, path: str, data: dict) -> None:
     zf.writestr(path, json.dumps(data, indent=2))
 
 
+# ── Routes ────────────────────────────────────────────────────────────────────
+
 @app.route("/")
 def home():
-    return render_template("index.html")
+    # Flask fallback UI (kept for backward compat)
+    try:
+        return render_template("index.html")
+    except Exception:
+        return jsonify({"status": "ok", "message": "ui2code API — use the Next.js frontend"})
 
 
 @app.route("/health")
 def health():
     return jsonify({
         "status": "ok",
-        "service": "UI2CODE",
+        "service": "ui2code",
+        "version": "2.0.0",
         "capabilities": [
-            "visual_understanding",
-            "ocr_semantics",
-            "layout_intelligence",
-            "design_system_extraction",
-            "component_hierarchy",
-            "ai_reasoning",
-            "code_generation",
-            "responsive_generation",
-            "evaluation",
+            "visual_understanding", "ocr_semantics", "layout_intelligence",
+            "design_system_extraction", "component_hierarchy", "ai_reasoning",
+            "code_generation", "responsive_generation", "evaluation",
         ],
     })
 
@@ -102,13 +100,11 @@ def health():
 def upload_image():
     if "image" not in request.files:
         return jsonify({"error": "No image file provided"}), 400
-
     image = request.files["image"]
-    if image.filename == "":
+    if not image.filename:
         return jsonify({"error": "No selected file"}), 400
-
     if not allowed_file(image.filename):
-        return jsonify({"error": "Unsupported file type"}), 400
+        return jsonify({"error": "Unsupported file type. Use PNG, JPG, or WEBP."}), 400
 
     filename = secure_filename(image.filename)
     filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
@@ -117,18 +113,21 @@ def upload_image():
     return jsonify({"redirect_url": f"/editor/{filename}", "filename": filename})
 
 
-@app.route("/uploads/<filename>")
-def uploaded_file(filename):
+@app.route("/uploads/<path:filename>")
+def uploaded_file(filename: str):
     return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
 
 
 @app.route("/editor/<filename>")
-def editor(filename):
-    return render_template("editor.html", image_file=filename)
+def editor(filename: str):
+    try:
+        return render_template("editor.html", image_file=filename)
+    except Exception:
+        return jsonify({"redirect": f"/studio/{filename}"}), 302
 
 
-@app.route("/api/analyze/<filename>", methods=["GET"])
-def analyze_screenshot(filename):
+@app.route("/api/analyze/<path:filename>", methods=["GET"])
+def analyze_screenshot(filename: str):
     image_path = os.path.join(app.config["UPLOAD_FOLDER"], secure_filename(filename))
     if not os.path.exists(image_path):
         return jsonify({"error": "Image not found"}), 404
@@ -143,27 +142,10 @@ def analyze_screenshot(filename):
         return jsonify({"error": str(exc)}), 500
 
 
-@app.route("/generate/<filename>", methods=["GET"])
-def generate_full_layout(filename):
-    """Backward-compatible route used by older UI clients."""
-    response = analyze_screenshot(filename)
-    if isinstance(response, tuple):
-        return response
-
-    data = response.get_json()
-    files = data.get("generated_project", {}).get("files", {})
-    return jsonify({
-        "html": files.get("index.html", files.get("pages/index.js", files.get("App.jsx", ""))),
-        "css": files.get("style.css", files.get("styles/globals.css", "")),
-        "js": files.get("script.js", ""),
-        "analysis": data,
-    })
-
-
-@app.route("/download/<filename>", methods=["GET"])
-def download_zip(filename):
-    safe_filename = secure_filename(filename)
-    image_path = os.path.join(app.config["UPLOAD_FOLDER"], safe_filename)
+@app.route("/download/<path:filename>", methods=["GET"])
+def download_zip(filename: str):
+    safe = secure_filename(filename)
+    image_path = os.path.join(app.config["UPLOAD_FOLDER"], safe)
     if not os.path.exists(image_path):
         return jsonify({"error": "Image not found"}), 404
 
@@ -173,43 +155,33 @@ def download_zip(filename):
     try:
         result = get_pipeline().analyze(image_path, framework=framework, styling=styling)
         project_files = result.get("generated_project", {}).get("files", {})
-
         static_files = CodeGenerator(framework="html", styling="css").generate_code(
-            result["component_hierarchy"],
-            result["design_system"],
-            result["layout_intelligence"],
+            result["component_hierarchy"], result["design_system"], result["layout_intelligence"],
         )
 
-        memory_file = BytesIO()
-        with zipfile.ZipFile(memory_file, "w", compression=zipfile.ZIP_DEFLATED) as zf:
+        buf = BytesIO()
+        with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
             zf.writestr("ui2code-generated/README.md", build_project_readme(result))
-
             for path, content in project_files.items():
                 zf.writestr(f"ui2code-generated/project/{path.replace(os.sep, '/')}", content)
-
             for path, content in static_files.items():
                 zf.writestr(f"ui2code-generated/static-html/{path.replace(os.sep, '/')}", content)
-
             write_json(zf, "ui2code-generated/analysis/full-analysis.json", result)
             write_json(zf, "ui2code-generated/analysis/component-hierarchy.json", result["component_hierarchy"])
             write_json(zf, "ui2code-generated/analysis/design-system.json", result["design_system"])
             write_json(zf, "ui2code-generated/analysis/layout-intelligence.json", result["layout_intelligence"])
             write_json(zf, "ui2code-generated/analysis/ocr-semantics.json", result["ocr_semantics"])
             write_json(zf, "ui2code-generated/analysis/evaluation.json", result["evaluation"])
+            ext = os.path.splitext(safe)[1] or ".png"
+            zf.write(image_path, f"ui2code-generated/assets/source-screenshot{ext}")
 
-            extension = os.path.splitext(safe_filename)[1] or ".png"
-            zf.write(image_path, f"ui2code-generated/assets/source-screenshot{extension}")
-
-        memory_file.seek(0)
-        return send_file(
-            memory_file,
-            download_name="ui2code-generated-project.zip",
-            as_attachment=True,
-            mimetype="application/zip",
-        )
+        buf.seek(0)
+        return send_file(buf, download_name="ui2code-generated-project.zip",
+                         as_attachment=True, mimetype="application/zip")
     except Exception as exc:
         return jsonify({"error": str(exc)}), 500
 
 
 if __name__ == "__main__":
-    app.run(debug=Config.DEBUG)
+    port = int(os.getenv("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=Config.DEBUG)
